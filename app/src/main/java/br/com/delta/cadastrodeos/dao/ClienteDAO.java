@@ -5,12 +5,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import br.com.delta.cadastrodeos.br.com.delta.model.Cliente;
+import retrofiit.RetrofitInializador;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ClienteDAO extends SQLiteOpenHelper {
     public ClienteDAO(Context context) {
@@ -49,6 +54,7 @@ public class ClienteDAO extends SQLiteOpenHelper {
 
         }
         ContentValues dados = new ContentValues();
+//        dados.put("id", cliente.getId());
         dados.put("uuid", cliente.getUuid());
         dados.put("nome", cliente.getNome());
         dados.put("endereco", cliente.getEndereco());
@@ -97,6 +103,7 @@ public class ClienteDAO extends SQLiteOpenHelper {
                 altera(aluno);
             } else {
                 insere(aluno);
+
             }
         }
     }
@@ -120,7 +127,7 @@ public class ClienteDAO extends SQLiteOpenHelper {
 
         ContentValues dados = pegaDadosCliente(cliente);
 
-        String[] params ={cliente.getId().toString()};
+        String[] params ={cliente.getUuid().toString()};
 
         System.out.println("||||||||||||||||||||||||");
         System.out.println(cliente.getNome());

@@ -1,7 +1,7 @@
 package br.com.delta.cadastrodeos.br.com.delta.model;
 
 import java.io.Serializable;
-
+import java.util.Objects;
 
 
 public class Cliente implements Serializable{
@@ -90,8 +90,18 @@ public class Cliente implements Serializable{
 
 
 		if(id!=null)
-		return id.toString() +" "+ nome;
+		return id.toString() +" "+ nome+" "+uuid;
 		else
-			return nome;
+			return nome +uuid;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Cliente cliente = (Cliente) o;
+		return Objects.equals(uuid, cliente.uuid);
+	}
+
+
 }

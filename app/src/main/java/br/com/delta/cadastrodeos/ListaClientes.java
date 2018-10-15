@@ -71,6 +71,12 @@ public class ListaClientes extends AppCompatActivity {
                 List<Cliente>clientes = response.body();
                 ClienteDAO clienteDAO = new ClienteDAO(ListaClientes.this);
                 clienteDAO.sincroniza(clientes);
+                ClienteDAO clienteDAO2 = new ClienteDAO(ListaClientes.this);
+                List<Cliente> list = clienteDAO2.buscaClientes();
+
+                list.removeAll(clientes);
+
+                clientes.addAll(list);
                 carregaLista(clientes);
                 System.out.println(clientes+"-----------------------------------");
             }
