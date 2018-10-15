@@ -84,4 +84,14 @@ public class Cliente implements Serializable{
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
+	@Override
+	public String toString() {
+
+
+		if(id!=null)
+		return id.toString() +" "+ nome;
+		else
+			return nome;
+	}
 }

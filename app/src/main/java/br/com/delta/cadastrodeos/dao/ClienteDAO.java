@@ -72,12 +72,17 @@ public class ClienteDAO extends SQLiteOpenHelper {
 
         List<Cliente> clientes = new ArrayList<Cliente>();
         while (c.moveToNext()) {
-            Cliente aluno = new Cliente();
-            aluno.setUuid(c.getString(c.getColumnIndex("uuid")));
-            aluno.setNome(c.getString(c.getColumnIndex("nome")));
-
-
-            clientes.add(aluno);
+            Cliente cliente = new Cliente();
+            cliente.setUuid(c.getString(c.getColumnIndex("uuid")));
+            cliente.setNome(c.getString(c.getColumnIndex("nome")));
+            cliente.setEndereco(c.getString(c.getColumnIndex("endereco")));
+            cliente.setTelefone(c.getString(c.getColumnIndex("telefone")));
+            cliente.setEmail(c.getString(c.getColumnIndex("email")));
+            cliente.setAparelho(c.getString(c.getColumnIndex("aparelho")));
+            cliente.setMarca(c.getString(c.getColumnIndex("marca")));
+            cliente.setModelo(c.getString(c.getColumnIndex("modelo")));
+            cliente.setValor(c.getDouble(c.getColumnIndex("valor")));
+            clientes.add(cliente);
 
         }
         c.close();
@@ -86,8 +91,8 @@ public class ClienteDAO extends SQLiteOpenHelper {
 
     }
 
-    public void sincroniza(List<Cliente> alunos) {
-        for (Cliente aluno : alunos) {
+    public void sincroniza(List<Cliente> clientes) {
+        for (Cliente aluno : clientes) {
             if (existe(aluno)) {
                 altera(aluno);
             } else {
@@ -96,9 +101,31 @@ public class ClienteDAO extends SQLiteOpenHelper {
         }
     }
 
-    private void altera(Cliente aluno) {
+    private ContentValues pegaDadosCliente(Cliente cliente) {
+        ContentValues dados = new ContentValues();
+     
+        dados.put("uuid", cliente.getUuid());
+        dados.put("nome", cliente.getNome());
+        dados.put("endereco", cliente.getEndereco());
+        dados.put("telefone", cliente.getTelefone());
+        dados.put("email", cliente.getEmail());
+        dados.put("aparelho", cliente.getAparelho());
+        dados.put("marca", cliente.getMarca());
+        dados.put("modelo", cliente.getModelo());
+        dados.put("valor", cliente.getValor());return dados;
     }
 
+    public void altera(Cliente cliente)  {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues dados = pegaDadosCliente(cliente);
+
+        String[] params ={cliente.getId().toString()};
+
+        System.out.println("||||||||||||||||||||||||");
+        System.out.println(cliente.getNome());
+        db.update("Cliente", dados, "uuid = ?", params);
+    }
     private boolean existe(Cliente cliente) {
         SQLiteDatabase db = getReadableDatabase();
         String existe = "SELECT uuid FROM cliente WHERE uuid = ? LIMIT 1";

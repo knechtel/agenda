@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import br.com.delta.cadastrodeos.br.com.delta.model.Cliente;
@@ -42,6 +42,20 @@ public class ListaClientes extends AppCompatActivity {
             }
         });
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Cliente cliente = (Cliente) listView.getItemAtPosition(i);
+                Intent intentVaiProFormulario = new Intent(ListaClientes.this, MainActivity.class);
+
+                intentVaiProFormulario.putExtra("cliente", cliente) ;
+                startActivity(intentVaiProFormulario);
+            }
+
+        });
+
     }
 
     @Override
@@ -72,14 +86,10 @@ public class ListaClientes extends AppCompatActivity {
 
 
     void carregaLista(List<Cliente>lista){
-        List<String> listClientes= new ArrayList<String>();
 
 
-        for (Cliente c:lista) {
-            listClientes.add(c.getNome()+ " "+c.getUuid());
-        }
-        listClientes.add("");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listClientes);
+
+        ArrayAdapter<Cliente> adapter = new ArrayAdapter<Cliente>(this, android.R.layout.simple_list_item_1, lista);
         listView.setAdapter(adapter);
     }
 }
